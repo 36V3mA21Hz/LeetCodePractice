@@ -1,5 +1,5 @@
 class Solution {
-    int climb[1000]();
+    int climb[1000] = {};
 public:
     int climbStairs(int n) {
     	if (n == 1) return 1;
