@@ -3,28 +3,19 @@ public:
 	bool canJump(int A[], int n) {
 		if (n <= 1)
 			return true;
-		vector<int> p(n, -1);
-		canJumpAux(A, p, n, 0);
-		if (p[n - 1] == 1)
-			return true;
-		else
-			return false;
+		bool r[] = {false};
+		canJumpAux(A, r, n-1);
 	}
-	int canJumpAux(int A[], vector<int> &p, int &n, int index) {
-		if (index > n - 1)
-			return 0;
-		if (p[index] != -1)
-			return p[index];
-		if (A[index] == 0 && index < n - 1)
-			return 0;
-		if (index == n - 1)
-			return 1;
-		int saveIndex = index;
-		for (int i = 1; i <= A[index]; i++) {
-			index += i;
-			if (index >= n) break;
-			p[index] = 1 * canJumpAux(A, p, n, index);
+	bool canJumpAux(int A[], vector<int> &r, int n) {
+		if (r[n])
+			return r[n];
+		bool q = false;
+		if (A[n] >= 1) {
+			q = canJumpAux(A, r, n - 1);
+		} else {
+			q = false;
 		}
-		return p[saveIndex];
+		r[n] = q;
+		return q;
 	}
 };
