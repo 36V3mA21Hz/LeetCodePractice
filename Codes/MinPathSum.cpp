@@ -1,19 +1,21 @@
 class Solution {
 public:
     int minPathSum(vector<vector<int> > &grid) {
-    	if (grid.empty()) return 0;
-    	int min = INT_MAX;
-    	minPathSumAux(grid, min, 0, 0, 0);
-    	return min;
-    }
-    void minPathSumAux(vector<vector<int>> &grid, int &min, int temp, int row, int column) {
-    	if (column == grid.size()) 
-    		return;
-    	if (row == grid.size()) 
-    		return;
-    	temp += grid[row][column]; 
-    	minPathSumAux(grid, min, temp, row, column + 1);
-    	minPathSumAux(grid, min, temp, row + 1, column);
-    	min = temp < min ? temp : min;
+        if (grid.empty())
+            return 0;
+        int m = grid.size();
+        int n = grid.front().size();
+        vector<int> buffer(n, INT_MAX);
+        buffer[0] = 0;
+        for (int i = 0; i < m; i++) {
+            buffer[0] += grid[i][0];
+            for (int j = 1; j < n; j++) {
+                int q1 = buffer[j];
+                int q2 = buffer[j-1];;
+                int q = q1 < q2 ? q1 : q2;
+                buffer[j] = q + grid[i][j];
+            }
+        }
+        return buffer[n-1];
     }
 };
