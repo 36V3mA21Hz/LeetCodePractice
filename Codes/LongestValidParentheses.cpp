@@ -4,28 +4,25 @@ public:
         if (s.empty())
         	return 0;
         int n = (int)s.size();
-        int maxv = INT_MIN, i = 0, result = 0;
+        int maxv = INT_MIN, i = 0;
         while (i < n) {
-        	result += closeParentheses(s, i, n);
+        	int temp = closeParentheses(s, i, n);
+        	maxv = max(temp > 0 ? temp: 0, maxv);
         }
-        return result * 2;
+        return maxv * 2;
     }
-    int closeParentheses(string &s, int start, int n) {
-    	int i = start, pairs = 0, levels = 0;
-    	if (s[i] == '(')
-    		levels++;
-    	i++;
-    	while(levels != 0 && i < n) {
-    		if (s[i] == '(')
-    			levels++;
-    		else {
-    			levels--;
-    			pairs++;
-    		}
-    		i++;
+    int closeParentheses(string &s, int &i, int n) {
+    	if (i >= n)
+    		return 0;
+    	if (s[i] == ')') {
+    		return 1;
     	}
-    	if (levels != 0)
-    		pairs = 0;
-    	return pairs;
+    	int maxv = 0；
+    	while (s[i] == '(') {
+    		i++;
+    		int temp = closeParentheses(s, i, n);
+    		maxv = max(temp > 0 ? temp : 0, maxv);
+	    }	
+    	return maxv;
     }
 };

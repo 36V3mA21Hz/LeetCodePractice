@@ -1,33 +1,20 @@
 class Solution {
 public:
 	int maxSubArray(int A[], int n) {
-		int maxLeft = 0;
-		int maxRight = 0;
-		int maxSofar = A[0];
-		int maxRight2Cur = 0;
-		for (int cur = 1; cur < n; cur++) {
-			if (maxRight2Cur + A[cur] > 0) {
-				if (maxSofar > A[cur] || maxSofar + maxRight2Cur > 0) {
-					maxSofar += A[cur] + maxRight2Cur;
-					maxRight = cur;
-					maxRight2Cur = 0;
-				} else {
-					maxSofar = A[cur];
-					maxLeft = cur;
-					maxRight = cur;
-					maxRight2Cur = 0;
-				}
+		if (n == 0)
+			return 0;
+		int max = 0, buffer_J_minus1_k_minus1 = 0;
+		for (int i = 0; i < n; i++) {
+			if (buffer_J_minus1_k_minus1 > 0) {
+				max += buffer_J_minus1_k_minus1 + A[i];
+				buffer_J_minus1_k_minus1 = 0;
+			} else if (A[i] > max) {
+				max = A[i];
+				buffer_J_minus1_k_minus1 = 0;
 			} else {
-				if (maxSofar <= A[cur]) {
-					maxSofar = A[cur];
-					maxLeft = cur;
-					maxRight = cur;
-					maxRight2Cur = 0;
-				} else {
-					maxRight2Cur += A[cur];
-				}
+				buffer_J_minus1_k_minus1 += A[i];
 			}
 		}
-		return maxSofar;
+		return max;
 	}
 };
