@@ -9,10 +9,10 @@ public:
         unordered_set<int> curr, next;
         vector<int> dup(strs.size(), 0);
         vector<vector<int>> dups(26, dup);
-        for (int i = 0; i < 26; i++) {
-            next.emplace(i);
-            for (int j = 0; j < strs.size(); j++) {
-                dups[i][j]++;
+        for (int i = 0; i < strs.size(); i++) {
+            for (int j = 0; j < strs[i].size(); j++) {
+                dups[strs[i][j] - 'a'][i]++;
+                next.emplace(i);
             }
         }
         for (int i = 0; i < 26; i++) {
