@@ -2,22 +2,35 @@ class Solution {
 public:
     ListNode *sortList(ListNode *head) {
         if (!head)
-        	return NULL;
-        ListNode *n = head;
-        int length = 1;
-        while (n->next) {
-        	n = n->next;
-        	length++;
+            return NULL;
+        ListNode *node = head;
+        while (node->next) {
+            node = node->next;
         }
-        mergesort(head, n);
+        quicksort(head, node);
         return head;
     }
-    void mergesort(ListNode *p, int pi, int ri) {
-    	if (pi < ri) {
-    		int mid = (pi + ri) / 2;
-    		while ()
-    		mergesort(p, pi, mid - 1);
-    		mergesort(p, mid + 1, ri);
-    	}
+    void quicksort(ListNode *p, ListNode *r) {
+        if (p && r && p != r && p != r->next) {
+            int x = r->val;
+            ListNode *n0 = new ListNode(0);
+            n0->next = p;
+            ListNode *i = n0, *j = p;
+            while (j != r) {
+                if (j->val <= x) {
+                    i = i->next;
+                    swap(i->val, j->val);
+                }
+                j = j->next;
+            }
+            swap(i->next->val, r->val);
+            ListNode *q = i->next;
+            if (i == n0)
+                i = NULL;
+            delete n0;
+            quicksort(p, i);
+            quicksort(q->next, r);
+        }
+
     }
 };

@@ -17,7 +17,6 @@ public:
         vector<TreeNode*> nextLevel;
         bool even = true;
         thisLevel.push_back(root);
-
         while (!thisLevel.empty()) {
         	TreeNode *node = NULL;
         	vector<int> levelValue;
