@@ -1,18 +1,18 @@
 class Solution {
 public:
     int canCompleteCircuit(vector<int> &gas, vector<int> &cost) {
-        vector<int> between2Cites(gas.size());
-        vector<int> from0ToCur(gas.size());
-        int sum = 0;
-        for (int i = 0; i < gas.size(); i++) {
-            between2Cites[i] = gas[i] - cost[i];
-            sum += between2Cites[i];
-            from0ToCur[i] = sum;
+        int sum = 0, totalGas = 0, startPoint = 0, n = gas.size(), diff = 0;
+        for (int i = 0; i < n; i++) {
+            diff = gas[i] - cost[i];
+            totalGas += diff;
+            sum += diff;
+            if (sum < 0) {
+                startPoint = i + 1;
+                sum = 0;
+            }
         }
-        for (int i = 0; i < from0ToCur.size(); i++) {
-            if (from0ToCur[i] >= 0 && sum - from0ToCur[i] >= 0)
-                return i;
-        }
-        return -1;
+        if (totalGas < 0)
+            return -1;
+        return startPoint;
     }
 };
