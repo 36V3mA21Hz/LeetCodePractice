@@ -2,26 +2,12 @@ class Solution {
 public:
     vector<int> plusOne(vector<int> &digits) {
     	if (digits.empty()) return {};
-    	int carry = 0;
-    	for (auto it = digits.end() - 1; it >= digits.begin(); it--) {
-    		if (it == digits.end() - 1) {
-    			if (*it + 1 == 10) {
-    				carry = 1;
-    				*it = 0;
-    			} else {
-    				(*it)++;
-    			}
-    		} else {
-    			if (*it + carry == 10) {
-    				carry = 1;
-    				*it = 0;
-    			} else {
-    				*it += carry;
-    				carry = 0;
-    			}
-    		}
+    	int carry = 1;
+    	for (int i = digits.size() - 1; i >= 0; i--) {
+    		carry = (digits[i] + carry) / 10;
+            digits[i] = (digits[i] + carry) % 10;
     	}
-    	if (carry == 1)
+    	if (carry)
     		digits.insert(digits.begin(), 1);
     	return digits;
     }

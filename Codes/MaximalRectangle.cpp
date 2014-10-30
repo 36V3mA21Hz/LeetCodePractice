@@ -1,38 +1,33 @@
 class Solution {
 public:
-	int maximalRectangle(vector<vector<char> > &matrix) {
-		if (matrix.empty()) return 0;
-		int m = matrix.size(), n = matrix[0].size();
-		int maxArea = 0;
-		vector<int> lengths(n + 1, 0);
-		vector<int> widths(n + 1, 0);
-		for (int i = 0; i < m; i++) {
-			for (int j = 0; j < n; j++) {
-				if (matrix[i][j] == '1') {
-					if (widths[j] && widths[j + 1]) {
-						widths[j + 1] = min(widths[j + 1] + 1, widths[j]);
-						lengths[j + 1] = min(lengths[j + 1], lengths[j] + 1);
-					}
-					else if (widths[j]) {
-						widths[j + 1] = widths[j];
-						lengths[j + 1] = lengths[j] + 1;
-					}
-					else if (widths[j + 1]) {
-						widths[j + 1] = widths[j + 1] + 1;
-						lengths[j + 1] = lengths[j + 1];
-					}
-					else {
-						widths[j + 1] = 1;
-						lengths[j + 1] = 1;
-					}
-					maxArea = max(maxArea, widths[j + 1] * lengths[j + 1]);
-				}
-				else {
-					widths[j + 1] = 0;
-					lengths[j + 1] = 0;
-				}
-			}
-		}
-		return maxArea;
-	}
+    int maximalRectangle(vector<vector<char> > &matrix) {
+        vector<int> height(matrix[0].size(), 0);
+        int maxArea = 0;
+        for (int i = 0; i < matrix.size(); i++) {
+        	for (int j = 0; j < matrix[0].size(); j++) {
+        		if (matrix[i][j])
+        			height[j] += 1;
+        		else
+        			height[j] = 0;
+        	}
+        	maxArea = max(maxArea, LarRecInHisto(height));
+        }
+        return maxArea;
+    }
+    int LarRecInHisto(vector<int> &height) {
+    	stack<int> incH;
+    	int sum = 0;
+    	height.push_back(0);
+    	for (int i = 0; i < height.size(); i++) {
+    		if (incH.empty() || height[i] > height[incH.top()])
+    			incH.push(i);
+    		else {
+    			int tmp = incH.top();
+    			incH.pop();
+    			sum = max(sum, height[tmp] * (incH.empty() ? i : i - incH.top() - 1));
+    			i--;
+    		}
+    	}
+    	return sum;
+    }
 };

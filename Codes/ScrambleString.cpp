@@ -4,43 +4,22 @@ public:
         if (s1.empty())
             return true;
         int n = s1.size();
-        queue<pair<int, int> > q;
-        vector<string> scrambleStr;
-        q.push({ 0, n - 1 });
-        string scrS = scramble(s1, 0, n - 1);
-        if (scrS == s2)
-            return true;
-        scrambleStr.push_back(s1);
-        while (!q.empty()) {
-            pair<int, int> t = q.front();
-            q.pop();
-            int nodeSize = scrambleStr.size();
-            for (int i = 0; i < nodeSize; i++) {
-                scrS = scramble(scrambleStr[i], t.first, t.second);
-                if (scrS == s2)
-                    return true;
-                scrambleStr.push_back(scrS);
-            }
-            if (t.first < t.second) {
-                int mid = (t.first + t.second) / 2;
-                if ((t.first + t.second) % 2)
-                    mid++;
-                if (t.first < mid - 1)
-                    q.push({ t.first, mid - 1 });
-                if (mid < t.second)
-                    q.push({ mid, t.second });
+        vector<vector<vector<int> > > mem = vector<vector<vector<int>>>(n + 1, vector<vector<int> >(n + 1, vector<int>(n + 1, 0)));
+        for (int i = n; i >= 1; i--) {
+            for (int j = n; j >= 1; j--) {
+                for (int k = 1; k <= n - max(i, j) + 1; k++) {
+                    if (k == 1) {
+                        if (s1[i - 1] == s2[j - 1]) mem[i][j][k] = 1;
+                    }
+                    else {
+                        for (int h = 1; h < k; h++)
+                            mem[i][j][k] = mem[i][j][k] || mem[i][j + k - h][h] && mem[i + h][j][k - h] \
+                            || mem[i][j][h] && mem[i + h][j + h][k - h];
+                    }
+
+                }
             }
         }
-    }
-    string scramble(string s, int i, int j) {
-        int mid = (i + j) / 2;
-        if ((i + j) % 2)
-            mid++;
-        string temp = s.substr(mid, j - mid + 1);
-        temp.append(s, i, mid - i);
-        string output = s.substr(0, i);
-        output.append(temp);
-        output.append(s, j + 1, s.size() - j - 1);
-        return output;
+        return mem[1][1][n];
     }
 };

@@ -2,8 +2,7 @@ class Solution {
 public:
 	vector<vector<int> > generate(int numRows) {
 		if (numRows == 0) return{};
-		vector<int> blank;
-		vector<vector<int>> pascal(numRows, blank);
+		vector<vector<int>> pascal(numRows, vector<int>());
 		pascal[0].push_back(1);
 		for (int j = 1; j < numRows; j++) {
 			for (int i = 0; i < j + 1; i++) {
